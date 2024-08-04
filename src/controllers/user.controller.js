@@ -53,12 +53,12 @@ userController.put('/:id', async(req, res, next) => {
     try {
         const id = req.params.id
         if(!id) {
-            return res.status(400).json({ errors: error.errors })
+            return res.status(400).json({ errors: "Id not found" })
         }
 
         const user = await showUser(id)
         if(!user) {
-            return res.status(404).json({ errors: 'User not found' })
+            return res.status(404).json({ errors: "User not found" })
         }
         
         const update_user = await updateUser(req.body, id)
@@ -73,12 +73,12 @@ userController.delete('/:id', async(req, res, next) => {
     try {
         const id = req.params.id
         if(!id) {
-            return res.status(404).json({ errors: 'User not found' })
+            return res.status(404).json({ errors: "Id not found" })
         }
 
         const user = await showUser(id)
         if(!user) {
-            throw { status: 404, message: error.message }
+            return res.status(404).json({ errors: "User not found" })
         }
 
         const user_delete = await deleteUser(id)
