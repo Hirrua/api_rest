@@ -1,6 +1,6 @@
 import { Router } from "express"
 import userSchema from "../validation/user.validation.js"
-import { createUser, deleteUser, fetchUsers, showUser, updateUser } from "../services/user.services.js"
+import { authentication, createUser, deleteUser, fetchUsers, showUser, updateUser } from "../services/user.services.js"
 
 const userController = Router()
 
@@ -84,6 +84,15 @@ userController.delete('/:id', async(req, res, next) => {
         const user_delete = await deleteUser(id)
         return res.status(200).json(user_delete)
 
+    } catch (error) {
+        next(error)
+    }
+})
+
+userController.post('/login', async(req, res, next) => {
+    try {
+        const token = await authentication(req.body)
+        res.status(201).json({ token })
     } catch (error) {
         next(error)
     }

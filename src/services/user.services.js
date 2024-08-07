@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
+import { generateJWT } from '../utils/jwt.js'
 
 const prisma = new PrismaClient()
 
@@ -11,17 +12,17 @@ const fetchUsers = async () => {
     }
 }
 
-const showUser = async (userId) => {
+const showUser = async (user_id) => {
     try {
-        return await prisma.user.findUnique({ where: { id: parseInt(userId) } })
+        return await prisma.user.findUnique({ where: { id: parseInt(user_id) } })
     } catch (error) {
         throw new Error('Failed to fetch user')
     }
 }
 
-const createUser = async (userData) => {
+const createUser = async (user_data) => {
     try {
-        let { name, email, password, cpf, rg } = userData
+        let { name, email, password, cpf, rg } = user_data
 
         const salt = bcrypt.genSaltSync()
         password = await bcrypt.hash(password, salt)
@@ -32,23 +33,40 @@ const createUser = async (userData) => {
     }
 }
 
-const updateUser = async (userData, userId) => {
+const updateUser = async (user_data, user_id) => {
     try {
-        let { name, cpf, rg } = userData
-        return await prisma.user.update({ where: { id: parseInt(userId) }, data: { name, cpf, rg } })
+        let { name, cpf, rg } = user_data
+        return await prisma.user.update({ where: { id: parseInt(user_id) }, data: { name, cpf, rg } })
 
     } catch (error) {
         throw new Error('Failed to update user')
     }
 }
 
-const deleteUser = async (userId) => {
+const deleteUser = async (user_id) => {
     try {
-        return await prisma.user.delete({ where: { id: parseInt(userId) } })
+        return await prisma.user.delete({ where: { id: parseInt(user_id) } })
 
     } catch (error) {
         throw new Error('Failed to delete user')
     }
 }
 
-export { createUser, fetchUsers, showUser, updateUser, deleteUser }
+const authentication = async({ email, password }) => {
+   if(!email || !password) {
+        throw new Error('Require missing')
+   }
+
+   const user = await prisma.user.findUnique({ where: { email } })
+   const compare = await bcrypt.compare(password, user.password)
+
+   if(!user || !compare) {
+        throw new Error('User or password invalid')
+   }
+
+   const { id } = user
+   const token = generateJWT({ id, email })
+   return token
+}
+
+export { createUser, fetchUsers, showUser, updateUser, deleteUser, authentication }
