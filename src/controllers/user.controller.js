@@ -1,6 +1,7 @@
 import { Router } from "express"
 import userSchema from "../validation/user.validation.js"
 import { authentication, createUser, deleteUser, fetchUsers, showUser, updateUser } from "../services/user.services.js"
+import authenticationMiddleware from "../middlewares/auth.middleware.js"
 
 const userController = Router()
 
@@ -49,7 +50,7 @@ userController.post('/', async(req, res, next) => {
     }
 })
 
-userController.put('/:id', async(req, res, next) => {
+userController.put('/:id', authenticationMiddleware, async(req, res, next) => {
     try {
         const id = req.params.id
         if(!id) {
@@ -69,7 +70,7 @@ userController.put('/:id', async(req, res, next) => {
     }
 })
 
-userController.delete('/:id', async(req, res, next) => {
+userController.delete('/:id', authenticationMiddleware, async(req, res, next) => {
     try {
         const id = req.params.id
         if(!id) {
@@ -82,7 +83,7 @@ userController.delete('/:id', async(req, res, next) => {
         }
 
         const user_delete = await deleteUser(id)
-        return res.status(200).json(user_delete)
+        return res.status(200).json(null)
 
     } catch (error) {
         next(error)

@@ -13,13 +13,13 @@ const generateJWT = (payload) => {
     return jwt.sign(payload, SECRET, jwtConfig)
 }
 
-const authenticateToken = async(token) => {
+const authenticateToken = (token) => {
     if(!token) {
         throw { status: 401, message: "No token" }
     }
 
     try {
-        const introspection = await jwt.verify(token, SECRET, jwtConfig)
+        const introspection = jwt.verify(token, SECRET, jwtConfig)
         return introspection
     } catch (error) {
         console.log("error", e.message)
