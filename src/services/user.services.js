@@ -14,7 +14,7 @@ const fetchUsers = async () => {
 
 const showUser = async (user_id) => {
     try {
-        return await prisma.user.findUnique({ where: { id: parseInt(user_id) } })
+        return await prisma.user.findUnique({ where: { id: parseInt(user_id) }, include: { Animal: true } })
     } catch (error) {
         throw new Error('Failed to fetch user')
     }

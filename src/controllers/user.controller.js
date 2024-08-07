@@ -39,7 +39,7 @@ userController.post('/', async(req, res, next) => {
         const { error } = await userSchema.validate(req.body, { abortEarly: false })
 
         if(error) {
-            return res.status(404).json({ errors: error.details })
+            return res.status(400).json({ errors: error.details })
         }
 
         const new_user = await createUser(req.body)
