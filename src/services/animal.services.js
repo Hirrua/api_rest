@@ -21,7 +21,7 @@ const showAnimal = async(animal_id) => {
 
 const createAnimal = async(animal_data) => {
     try {
-        const { name, date_birth, age, weight, height, breed, gender, photo, user_id } = animal_data
+        const { name, date_birth, age, weight, height, breed, gender, user_id } = animal_data
 
         if (!user_id) {
             throw new Error("User ID is required")
@@ -35,7 +35,6 @@ const createAnimal = async(animal_data) => {
             height,
             breed,
             gender,
-            photo,
             user_id
             } 
         })
@@ -48,7 +47,7 @@ const createAnimal = async(animal_data) => {
 
 const updateAnimal = async(animal_data, animal_id) => {
     try {  
-        const { name, date_birth, age, weight, height, breed, gender, photo, user_id } = animal_data
+        const { name, date_birth, age, weight, height, breed, gender, user_id } = animal_data
 
         if (!user_id) {
             throw new Error("User ID is required")
@@ -64,7 +63,6 @@ const updateAnimal = async(animal_data, animal_id) => {
                 height,
                 breed,
                 gender,
-                photo,
                 user_id
             }
         })

@@ -15,8 +15,8 @@ model User {
   cpf        String   @db.VarChar(14)
   rg         String   @db.VarChar(14)
   created_at DateTime @default(now())
-  
-  Animal     Animal[]
+
+  animal Animal[]
 
   @@map("users")
 }
@@ -30,14 +30,28 @@ model Animal {
   height     Float?    @default(0.0)
   breed      String?   @db.VarChar(50)
   gender     Gender
-  photo      String?   @db.VarChar(255)
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
 
-  user   User @relation(fields: [user_id], references: [id])
+  user    User @relation(fields: [user_id], references: [id])
   user_id Int
 
+  photo Photo?
+
   @@map("animals")
+}
+
+model Photo {
+  id           Int      @id @default(autoincrement())
+  originalname String
+  filename     String
+  created_ate  DateTime @default(now())
+  updated_at   DateTime @updatedAt
+
+  animal    Animal @relation(fields: [animal_id], references: [id])
+  animal_id Int    @unique
+
+  @@map("photos")
 }
 
 enum Gender {

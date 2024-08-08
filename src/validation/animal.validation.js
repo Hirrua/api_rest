@@ -9,7 +9,6 @@ const animalSchema = yup.object().shape({
     height: yup.number().min(0).nullable(),
     breed: yup.string().max(50).nullable(),
     gender: yup.mixed().oneOf(genderEnum).required("O campo genero é obrigatório"),
-    photo: yup.string().url().nullable(),
     user_id: yup.number().required("Precisa vincular a um usuário")
 })
 
