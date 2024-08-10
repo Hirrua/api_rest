@@ -82,8 +82,8 @@ userController.delete('/:id', authenticationMiddleware, async(req, res, next) =>
             return res.status(404).json({ errors: "User not found" })
         }
 
-        const user_delete = await deleteUser(id)
-        return res.status(200).json(null)
+        await deleteUser(id)
+        return res.status(204).json(null)
 
     } catch (error) {
         next(error)

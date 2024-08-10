@@ -45,7 +45,7 @@ model Photo {
   id           Int      @id @default(autoincrement())
   originalname String
   filename     String
-  created_ate  DateTime @default(now())
+  created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
 
   animal    Animal @relation(fields: [animal_id], references: [id])

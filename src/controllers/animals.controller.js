@@ -29,7 +29,7 @@ animalsController.get('/:id', async(req, res, next) => {
     }
 })
 
-animalsController.post('/', async(req, res, next) => {
+animalsController.post('/', authenticationMiddleware, async(req, res, next) => {
     try {
         const { error } = animalSchema.validate(req.body, { abortEarly: false })
         if(error) {
@@ -77,7 +77,7 @@ animalsController.delete('/:id', authenticationMiddleware, async(req, res, next)
         }
 
         await deleteAnimal(id)
-        return res.status(200).json(null)
+        return res.status(204).json(null)
 
     } catch (error) {
         next(error)

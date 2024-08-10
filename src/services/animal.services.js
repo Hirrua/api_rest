@@ -12,8 +12,7 @@ const fetchAnimals = async() => {
 
 const showAnimal = async(animal_id) => {
     try {
-        console.log("Animal ID:", animal_id)
-        return await prisma.animal.findUnique({ where: { id: parseInt(animal_id) } })
+        return await prisma.animal.findUnique({ where: { id: parseInt(animal_id) }, include: { photo: true } })
     } catch (error) {
         throw new Error("Failed to show an animal")
     }
