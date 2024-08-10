@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client'
-import dotenv from "dotenv"
+import appConfig from '../config/app.config'
 
-dotenv.config()
 const prisma = new PrismaClient()
 
 const showPhoto = async(photo_id) => {
@@ -23,7 +22,7 @@ const createPhoto = async ({ originalname, filename, animal_id }) => {
             data: { originalname, filename, animal_id },
         })
 
-        const photo_url = `${process.env.BASE_URL}/uploads/${photo_animal.filename}`
+        const photo_url = `${appConfig.url}/uploads/${photo_animal.filename}`
 
         return { photo_animal, photo_url }
     } catch (error) {

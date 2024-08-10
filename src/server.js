@@ -1,14 +1,19 @@
-import express from 'express'
+import express from "express"
+import dotenv from "dotenv"
 import errorMiddleware from "./middlewares/error.middleware.js"
 import routes from "./routes/routes.js"
+import path from "path"
+
+dotenv.config()
 
 const app = express()
-const port = 3001
+const port = process.env.PORT
 
+app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(express.static(path.resolve(__dirname, "uploads")))
+
 app.use(errorMiddleware)
 app.use(routes)
 
-app.listen(port, () => {
-    console.log(`Server running: http://localhost:${port}`)
-})
+app.listen(port)
