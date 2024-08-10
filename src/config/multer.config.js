@@ -1,20 +1,18 @@
-import multer from 'multer'
-import { extname, resolve, dirname } from 'path'
-import { fileURLToPath } from 'url'
+const multer = require('multer')
+const path = require('path')
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+const uploadsPath = path.resolve(__dirname, '..', '..', 'uploads')
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, resolve(__dirname, '..', '..', 'uploads'))
+    cb(null, uploadsPath)
   },
   filename: (req, file, cb) => {
-    cb(null, `${Date.now()}${extname(file.originalname)}`)
+    cb(null, `${Date.now()}${path.extname(file.originalname)}`)
   }
 })
 
-export default multer({
+module.exports = multer({
   fileFilter: (req, file, cb) => {
     if (file.mimetype !== 'image/png' && file.mimetype !== 'image/jpeg') {
       return cb(new multer.MulterError('LIMIT_UNEXPECTED_FILE', file))
